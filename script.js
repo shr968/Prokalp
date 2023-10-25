@@ -1,36 +1,46 @@
-const inputBox=document.getElementById("input-box");
-const listContainer=document.getElementById("list-container");
+const inputBox = document.getElementById("input-box");
+const listContainer = document.getElementById("list-container");
 
-function addTask(){
-    if(inputBox.value===''){
+function addTask() {
+    if (inputBox.value === '') {
         alert("You must write something!");
     }
-    else{
-        let li=document.createElement("li");
-        li.innerHTML=inputBox.value;
+    else {
+        let li = document.createElement("li");
+        li.innerHTML = inputBox.value;
         listContainer.appendChild(li);
-        let span=document.createElement("span");
+        let span = document.createElement("span");
         span.innerHTML = "\u00d7";
         li.appendChild(span);
+
+        let todoItem = {};
+        todoItem.description = inputBox.value;
+        todoItem.status = 0;
+        saveData2(todoItem)
     }
-    inputBox.value="";
+    inputBox.value = "";
     saveData();
+
 }
-listContainer.addEventListener("click",function(e){
-    if(e.target.tagName=="LI"){
+listContainer.addEventListener("click", function (e) {
+    if (e.target.tagName == "LI") {
         e.target.classList.toggle("checked");
     }
-    else if( e.target.tagName ==="SPAN"){
+    else if (e.target.tagName === "SPAN") {
         e.target.parentElement.remove();
-    saveData();
+        saveData();
     }
-},false);
+}, false);
 
-function saveData(){
-    localStorage.setItem("data",listContainer.innerHTML);
+function saveData() {
+    localStorage.setItem("data", listContainer.innerHTML);
 }
-function showTask(){
-    listContainer.innerHTML=localStorage.getItem("data");
 
+function saveData2(todoItem) {
+    localStorage.setItem("todoItems", todoItem);
+}
+
+function showTask() {
+    listContainer.innerHTML = localStorage.getItem("data");
 }
 showTask();
